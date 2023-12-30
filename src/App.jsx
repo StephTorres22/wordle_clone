@@ -1,11 +1,14 @@
 import "./App.css";
-import LetterBox from "./components/LetterBox";
+
 import Line from "./components/Line";
 
 function App() {
+  const attempts = [1, 2, 3, 4, 5];
   return (
     <>
-      <Line count={5} />
+      {attempts.map((attempt) => {
+        return <Line count={5} key={attempt} />;
+      })}
     </>
   );
 }

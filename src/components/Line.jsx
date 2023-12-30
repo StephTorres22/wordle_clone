@@ -6,9 +6,10 @@ function Line({ count }) {
     display: "grid",
     gridTemplateColumns: "repeat(5, 1fr)",
     gridTemplateRows: "1fr",
-    
-    height: "5rem",
-    width: "100%",
+    height: "6rem",
+    width: "50%",
+    gap: "1rem",
+    marginBottom: "1rem",
     backgroundColor: "blue",
   };
   const letters = [];
