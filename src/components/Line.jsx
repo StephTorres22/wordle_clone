@@ -63,7 +63,7 @@ function Line({ count, targetWord }) {
         const targetLetter = letterObjs[index];
         const updatedTargetLetter = { ...targetLetter, correctLetter: true };
         const update = [
-          ...letterObjs.toSpliced(index, 1),
+          ...letterObjs.toSpliced(index, 1, updatedTargetLetter),
           (letterObjs[index] = updatedTargetLetter),
         ];
 
