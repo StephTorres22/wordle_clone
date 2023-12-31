@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LetterBox from "./LetterBox";
 import { checkWord } from "../utility/checkWord.js";
 
@@ -25,36 +25,59 @@ function Line({ count, targetWord }) {
   ) {
     return { index, correctLetter, correctLetterCorrectPlace };
   }
-  const letters = [];
 
   const [word, setWord] = useState("");
+  const [letterObjs, setLetterObjs] = useState([]);
 
-  for (let i = 0; i < count; i++) {
-    letters.push(letterObjFactory(i));
-  }
+  /* this isn't needed */
+  useEffect(() => {
+    const letters = [];
+    for (let i = 0; i < count; i++) {
+      letters.push(letterObjFactory(i));
+    }
+    setLetterObjs(letters);
+  }, [count]);
+
   //under the forLoop as we muck around with letters
-  const [letterObjs, setLetterObjs] = useState(letters);
 
   function checkLetter(letter, index, targetWord) {
     const targetArray = targetWord.split("");
     if (targetArray.includes(letter)) {
       if (targetWord[index] === letter) {
-        let update = [
-          ...letterObjs,
-          (letterObjs[index].correctLetterCorrectPlace = true),
+        const targetLetter = letterObjs[index];
+        const updatedTargetLetter = {
+          ...targetLetter,
+          correctLetterCorrectPlace: true,
+        };
+        /* wasn't working with just the toSpliced method, 
+        const updated = letterObjs.toSplice(index, 1, updatedTargetLetter) thought that was how it should be.
+        and const updated = [...letterObjs, letterObjs[index] = updatedTargetLetter] creates a duplication.
+        so... tried this and it seems to work.  */
+        const updatedList = [
+          ...letterObjs.toSpliced(index, 1),
+          (letterObjs[index] = updatedTargetLetter),
         ];
-        setLetterObjs(update);
+        /* needed as an anonymous arrow func so that the state update happens straight away, we're in a for loop when being called */
+        setLetterObjs(() => updatedList);
       } else {
-        let update = [...letterObjs, (letterObjs[index].correctLetter = true)];
-        setLetterObjs(update);
+        const targetLetter = letterObjs[index];
+        const updatedTargetLetter = { ...targetLetter, correctLetter: true };
+        const update = [
+          ...letterObjs.toSpliced(index, 1),
+          (letterObjs[index] = updatedTargetLetter),
+        ];
+
+        setLetterObjs(() => update);
       }
     }
+    console.log(letterObjs);
   }
 
   function checkAllLetters(word, targetWord) {
-    for (let i = 0; i < targetWord.length; i++) {
+    for (let i = 0; i < word.length; i++) {
       checkLetter(word[i], i, targetWord);
     }
+    console.log(letterObjs);
   }
   return (
     <div>
@@ -76,7 +99,6 @@ function Line({ count, targetWord }) {
       </button>
       <div style={styles}>
         {letterObjs.map((letter) => {
-          console.log(letterObjs);
           return (
             <LetterBox
               key={letter.index}
