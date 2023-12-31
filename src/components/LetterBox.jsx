@@ -1,13 +1,18 @@
 /* eslint-disable react/prop-types */
-function LetterBox({ children }) {
+function LetterBox({ children, correctLetter, correctLetterCorrectPlace }) {
   const styles = {
     height: "5rem",
     width: "5rem",
-    backgroundColor: "red",
+
     placeSelf: "center",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: correctLetterCorrectPlace
+      ? "green"
+      : correctLetter
+      ? "yellow"
+      : "red",
   };
 
   return (

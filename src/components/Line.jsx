@@ -16,12 +16,44 @@ function Line({ count, targetWord }) {
     fontSize: "2.5rem",
     lineHeight: "1.5",
   };
+
+  function letterObjFactory(
+    index,
+    correctLetter = false,
+    correctLetterCorrectPlace = false
+  ) {
+    return { index, correctLetter, correctLetterCorrectPlace };
+  }
   const letters = [];
 
   const [word, setWord] = useState("");
 
   for (let i = 0; i < count; i++) {
-    letters.push(i);
+    letters.push(letterObjFactory(i));
+  }
+  //under the forLoop as we muck around with letters
+  const [letterObjs, setLetterObjs] = useState(letters);
+
+  function checkLetter(letter, index, targetWord) {
+    const targetArray = targetWord.split("");
+    if (targetArray.includes(letter)) {
+      if (targetWord[index] === letter) {
+        let update = [
+          ...letterObjs,
+          (letterObjs[index].correctLetterCorrectPlace = true),
+        ];
+        setLetterObjs(update);
+      } else {
+        let update = [...letterObjs, (letterObjs[index].correctLetter = true)];
+        setLetterObjs(update);
+      }
+    }
+  }
+
+  function checkAllLetters(word, targetWord) {
+    for (let i = 0; i < targetWord.length; i++) {
+      checkLetter(word[i], i, targetWord);
+    }
   }
   return (
     <div>
@@ -33,10 +65,25 @@ function Line({ count, targetWord }) {
           setWord(e.target.value.trim()); //.trim() removes the white space
         }}
       />
-      <button onClick={() => checkWord(word, targetWord)}>Check word</button>
+      <button
+        onClick={() => {
+          checkAllLetters(word, targetWord);
+          checkWord(word, targetWord);
+        }}
+      >
+        Check word
+      </button>
       <div style={styles}>
-        {letters.map((letter) => {
-          return <LetterBox key={letter}>{word[letter]}</LetterBox>;
+        {letterObjs.map((letter) => {
+          return (
+            <LetterBox
+              key={letter.index}
+              correctLetter={letter.correctLetter}
+              correctLetterCorrectPlace={letter.correctLetterCorrectPlace}
+            >
+              {word[letter.index]}
+            </LetterBox>
+          );
         })}
       </div>
     </div>
