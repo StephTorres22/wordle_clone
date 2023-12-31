@@ -63,10 +63,13 @@ function Line({ count, targetWord }) {
         const targetLetter = letterObjs[index];
         const updatedTargetLetter = { ...targetLetter, correctLetter: true };
         const update = [
-          ...letterObjs.toSpliced(index, 1, updatedTargetLetter),
+          ...letterObjs.toSpliced(index, 1),
           (letterObjs[index] = updatedTargetLetter),
         ];
-
+        /* odd case, penultimate letter is correct but in wrong place, last letter is incorrect, 
+        switches letters around, and then on second click wrong letter is given correct status and changes colour!
+        if penultimate letter's correct place is last, when switched it does not change colour. not even on seocnd click
+        letterObjs[lastIndex]  */
         setLetterObjs(() => update);
       }
     }
