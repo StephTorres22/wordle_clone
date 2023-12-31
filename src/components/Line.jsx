@@ -17,6 +17,7 @@ function Line({ count, targetWord }) {
     lineHeight: "1.5",
   };
 
+  /* only want to do this on first load, this could be where the issue is! */
   function letterObjFactory(
     index,
     correctLetter = false,
@@ -75,6 +76,7 @@ function Line({ count, targetWord }) {
       </button>
       <div style={styles}>
         {letterObjs.map((letter) => {
+          console.log(letterObjs);
           return (
             <LetterBox
               key={letter.index}
