@@ -8,7 +8,7 @@ function LetterBox({ children, correctLetter, correctLetterCorrectPlace }) {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: correctLetterCorrectPlace
+    backgroundColor: correctLetterCorrectPlace && correctLetter
       ? "green"
       : correctLetter
       ? "yellow"

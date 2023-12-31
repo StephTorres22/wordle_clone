@@ -38,49 +38,33 @@ function Line({ count, targetWord }) {
     setLetterObjs(letters);
   }, [count]);
 
-  //under the forLoop as we muck around with letters
+  function checkWordHasLetter(letter, targetWord) {
+    if (targetWord.includes(letter)) {
+      return true;
+    } else return false;
+  }
 
-  function checkLetter(letter, index, targetWord) {
-    const targetArray = targetWord.split("");
-    if (targetArray.includes(letter)) {
-      if (targetWord[index] === letter) {
-        const targetLetter = letterObjs[index];
-        const updatedTargetLetter = {
-          ...targetLetter,
-          correctLetterCorrectPlace: true,
-        };
-        /* wasn't working with just the toSpliced method, 
-        const updated = letterObjs.toSplice(index, 1, updatedTargetLetter) thought that was how it should be.
-        and const updated = [...letterObjs, letterObjs[index] = updatedTargetLetter] creates a duplication.
-        so... tried this and it seems to work.  */
-        const updatedList = [
-          ...letterObjs.toSpliced(index, 1),
-          (letterObjs[index] = updatedTargetLetter),
-        ];
-        /* needed as an anonymous arrow func so that the state update happens straight away, we're in a for loop when being called */
-        setLetterObjs(() => updatedList);
-      } else {
-        const targetLetter = letterObjs[index];
-        const updatedTargetLetter = { ...targetLetter, correctLetter: true };
-        const update = [
-          ...letterObjs.toSpliced(index, 1),
-          (letterObjs[index] = updatedTargetLetter),
-        ];
-        /* odd case, penultimate letter is correct but in wrong place, last letter is incorrect, 
-        switches letters around, and then on second click wrong letter is given correct status and changes colour!
-        if penultimate letter's correct place is last, when switched it does not change colour. not even on seocnd click
-        letterObjs[lastIndex]  */
-        setLetterObjs(() => update);
-      }
-    }
-    console.log(letterObjs);
+  function rightLetterRightPosition(letter, targetLetter) {
+    if (targetLetter === letter) {
+      return true;
+    } else return false;
   }
 
   function checkAllLetters(word, targetWord) {
+    const updatedLetterObjsArray = [];
     for (let i = 0; i < word.length; i++) {
-      checkLetter(word[i], i, targetWord);
+      const updatedTargetLetter = {
+        ...letterObjs[i],
+        correctLetter: checkWordHasLetter(word[i], targetWord),
+        correctLetterCorrectPlace: rightLetterRightPosition(
+          word[i],
+          targetWord[i]
+        ),
+      };
+
+      updatedLetterObjsArray.push(updatedTargetLetter);
     }
-    console.log(letterObjs);
+    setLetterObjs(() => updatedLetterObjsArray);
   }
   return (
     <div>
