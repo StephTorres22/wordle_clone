@@ -27,6 +27,7 @@ function Line({ count, targetWord, lettersMap }) {
 
   const [word, setWord] = useState("");
   const [letterObjs, setLetterObjs] = useState([]);
+  const [disabled, setDisabled] = useState(false);
 
   /* this isn't needed */
   useEffect(() => {
@@ -73,12 +74,12 @@ function Line({ count, targetWord, lettersMap }) {
               letterObj.letter == letter &&
               letterObj.correctLetterCorrectPlace !== true
           );
+
           /* work backwards through letterObjsToEdit array */
-          for (let i = numberOfChanges -1; i >= 0; i--) {
+          for (let i = numberOfChanges - 1; i >= 0; i--) {
             const updatedObj = { ...letterObjsToEdit[i], correctLetter: false };
             updatedArray[updatedObj.index] = updatedObj;
           }
-          console.log(letterObjsToEdit, numberOfChanges);
         }
       }
     }
@@ -94,12 +95,15 @@ function Line({ count, targetWord, lettersMap }) {
         onChange={(e) => {
           setWord(e.target.value.trim()); //.trim() removes the white space
         }}
+        disabled={disabled}
       />
       <button
         onClick={() => {
           checkAllLetters(word, targetWord);
           checkWord(word, targetWord, letterObjs);
+          setDisabled(!disabled);
         }}
+        disabled={disabled}
       >
         Check word
       </button>
