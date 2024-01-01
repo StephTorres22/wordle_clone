@@ -28,6 +28,7 @@ function Line({ count, targetWord, lettersMap }) {
   const [word, setWord] = useState("");
   const [letterObjs, setLetterObjs] = useState([]);
   const [disabled, setDisabled] = useState(false);
+  //const [buttonDisabled, setButtonDisabled] = useState(true);
 
   /* this isn't needed */
   useEffect(() => {
@@ -83,6 +84,7 @@ function Line({ count, targetWord, lettersMap }) {
         }
       }
     }
+
     return updatedArray;
   }
 
@@ -90,7 +92,7 @@ function Line({ count, targetWord, lettersMap }) {
     <div>
       <input
         type="text"
-        maxLength={5}
+        maxLength={targetWord.length}
         value={word}
         onChange={(e) => {
           setWord(e.target.value.trim()); //.trim() removes the white space
@@ -99,9 +101,14 @@ function Line({ count, targetWord, lettersMap }) {
       />
       <button
         onClick={() => {
-          checkAllLetters(word, targetWord);
-          checkWord(word, targetWord, letterObjs);
-          setDisabled(!disabled);
+          if (word.length < targetWord.length) {
+            alert("Your word is too short");
+          } else {
+            checkAllLetters(word, targetWord);
+            checkWord(word, targetWord, letterObjs);
+            setDisabled(!disabled);
+          }
+          /* need to add functionality not to be able to check words that are too short. */
         }}
         disabled={disabled}
       >
