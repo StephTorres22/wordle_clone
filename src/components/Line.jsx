@@ -1,9 +1,15 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import LetterBox from "./LetterBox";
-import { checkWord } from "../utility/checkWord.js";
+import {
+  checkWord,
+  letterObjFactory,
+  checkWordHasLetter,
+  rightLetterRightPosition,
+  getLetterCountFromInputWord,
+} from "../utility/checkWord.js";
 
-function Line({ count, targetWord }) {
+function Line({ count, targetWord, lettersMap }) {
   const styles = {
     display: "grid",
     gridTemplateColumns: "repeat(5, 1fr)",
@@ -16,15 +22,8 @@ function Line({ count, targetWord }) {
     fontSize: "2.5rem",
     lineHeight: "1.5",
   };
-
-  /* only want to do this on first load, this could be where the issue is! */
-  function letterObjFactory(
-    index,
-    correctLetter = false,
-    correctLetterCorrectPlace = false
-  ) {
-    return { index, correctLetter, correctLetterCorrectPlace };
-  }
+  /* CASE, word has multiple of the same letter at different positions,
+   need to be able to distinguish position  */
 
   const [word, setWord] = useState("");
   const [letterObjs, setLetterObjs] = useState([]);
@@ -33,22 +32,10 @@ function Line({ count, targetWord }) {
   useEffect(() => {
     const letters = [];
     for (let i = 0; i < count; i++) {
-      letters.push(letterObjFactory(i));
+      letters.push(letterObjFactory(i, word[i]));
     }
     setLetterObjs(letters);
-  }, [count]);
-
-  function checkWordHasLetter(letter, targetWord) {
-    if (targetWord.includes(letter)) {
-      return true;
-    } else return false;
-  }
-
-  function rightLetterRightPosition(letter, targetLetter) {
-    if (targetLetter === letter) {
-      return true;
-    } else return false;
-  }
+  }, [word, count]); //
 
   function checkAllLetters(word, targetWord) {
     const updatedLetterObjsArray = [];
@@ -64,8 +51,40 @@ function Line({ count, targetWord }) {
 
       updatedLetterObjsArray.push(updatedTargetLetter);
     }
-    setLetterObjs(() => updatedLetterObjsArray);
+
+    setLetterObjs(() => compareCounts(updatedLetterObjsArray));
+    /* need a function to compare the number of occurrences of a letter in a word vs the word input
+    change state accordingly so we don't have a multiple colour letter tiles for a single letter occurrence within a word. */
   }
+
+  function compareCounts(array) {
+    const inputLetterOccurrences = getLetterCountFromInputWord(word);
+    const map = lettersMap;
+
+    const updatedArray = [...array];
+
+    for (const letter in inputLetterOccurrences) {
+      if (map.has(letter)) {
+        const count = map.get(letter);
+        if (inputLetterOccurrences[letter] > count) {
+          const numberOfChanges = inputLetterOccurrences[letter] - count;
+          const letterObjsToEdit = array.filter(
+            (letterObj) =>
+              letterObj.letter == letter &&
+              letterObj.correctLetterCorrectPlace !== true
+          );
+          /* work backwards through letterObjsToEdit array */
+          for (let i = numberOfChanges -1; i >= 0; i--) {
+            const updatedObj = { ...letterObjsToEdit[i], correctLetter: false };
+            updatedArray[updatedObj.index] = updatedObj;
+          }
+          console.log(letterObjsToEdit, numberOfChanges);
+        }
+      }
+    }
+    return updatedArray;
+  }
+
   return (
     <div>
       <input
@@ -79,7 +98,7 @@ function Line({ count, targetWord }) {
       <button
         onClick={() => {
           checkAllLetters(word, targetWord);
-          checkWord(word, targetWord);
+          checkWord(word, targetWord, letterObjs);
         }}
       >
         Check word
@@ -92,7 +111,7 @@ function Line({ count, targetWord }) {
               correctLetter={letter.correctLetter}
               correctLetterCorrectPlace={letter.correctLetterCorrectPlace}
             >
-              {word[letter.index]}
+              {letter.letter}
             </LetterBox>
           );
         })}
