@@ -22,14 +22,12 @@ function Line({ count, targetWord, lettersMap }) {
     fontSize: "2.5rem",
     lineHeight: "1.5",
   };
-  /* CASE, word has multiple of the same letter at different positions,
-   need to be able to distinguish position  */
+
 
   const [word, setWord] = useState("");
   const [letterObjs, setLetterObjs] = useState([]);
   const [disabled, setDisabled] = useState(false);
-  //const [buttonDisabled, setButtonDisabled] = useState(true);
-
+  
   /* this isn't needed */
   useEffect(() => {
     const letters = [];
@@ -55,8 +53,7 @@ function Line({ count, targetWord, lettersMap }) {
     }
 
     setLetterObjs(() => compareCounts(updatedLetterObjsArray));
-    /* need a function to compare the number of occurrences of a letter in a word vs the word input
-    change state accordingly so we don't have a multiple colour letter tiles for a single letter occurrence within a word. */
+    
   }
 
   function compareCounts(array) {
