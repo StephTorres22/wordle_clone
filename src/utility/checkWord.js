@@ -1,9 +1,5 @@
 export function checkWord(word, targetWord) {
-  if (word === targetWord) {
-    return true;
-  } else {
-    return false;
-  }
+  return word === targetWord;
 }
 
 export function checkWordHasLetter(letter, targetWord) {
