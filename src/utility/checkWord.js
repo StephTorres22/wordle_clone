@@ -3,15 +3,11 @@ export function checkWord(word, targetWord) {
 }
 
 export function checkWordHasLetter(letter, targetWord) {
-  if (targetWord.includes(letter)) {
-    return true;
-  } else return false;
+  return targetWord.includes(letter);
 }
 
 export function rightLetterRightPosition(letter, targetLetter) {
-  if (targetLetter === letter) {
-    return true;
-  } else return false;
+  return targetLetter === letter;
 }
 
 export function letterObjFactory(
