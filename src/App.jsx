@@ -10,7 +10,15 @@ function App() {
     async function getTodaysWord() {
       const word = await axios.get("http://localhost:8000/");
 
-      console.log(word);
+      /* 
+    using standard fetch, think axios comes a lot more in handy when using other methods
+     const data = await fetch("http://localhost:8000/", {
+        method: "GET",
+        mode: "cors",
+      });
+
+      const word = await data.json();
+      setTodaysWord(word[0].word) */
       setTodaysWord(word.data[0].word);
     }
     getTodaysWord();
