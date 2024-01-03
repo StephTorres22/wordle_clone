@@ -44,6 +44,5 @@ export function getLetterCountFromInputWord(word) {
       return acc[curr] ? ++acc[curr] : (acc[curr] = 1), acc;
     }, {}); */
 
-  console.log(duplications);
   return duplications;
 }
