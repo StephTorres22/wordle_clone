@@ -9,6 +9,7 @@ function App() {
   useEffect(() => {
     async function getTodaysWord() {
       const word = await axios.get("http://localhost:8000/");
+
       console.log(word);
       setTodaysWord(word.data[0].word);
     }
