@@ -12,24 +12,22 @@ import {
 function Line({ count, targetWord, lettersMap, inputRef, handleInputChange }) {
   const styles = {
     display: "grid",
-    gridTemplateColumns: "repeat(5, 1fr)",
+    gridTemplateColumns: "repeat(5, .5fr)",
     gridTemplateRows: "1fr",
     height: "6rem",
     width: "50%",
-    gap: "1rem",
+
     marginBottom: "1rem",
     backgroundColor: "blue",
     fontSize: "2.5rem",
     lineHeight: "1.5",
   };
 
-  //const currentInput = useRef(1);
-
   const [word, setWord] = useState("");
   const [letterObjs, setLetterObjs] = useState([]);
   const [disabled, setDisabled] = useState(false);
+  const [hasBeenUsed, setHasBeenUsed] = useState(false);
 
-  /* this isn't needed */
   useEffect(() => {
     const letters = [];
     for (let i = 0; i < count; i++) {
@@ -37,10 +35,6 @@ function Line({ count, targetWord, lettersMap, inputRef, handleInputChange }) {
     }
     setLetterObjs(letters);
   }, [word, count]); //
-
-  /*  useEffect(() => {
-    currentInput.current.focus();
-  }, [currentInput]); */
 
   function checkAllLetters(word, targetWord) {
     const updatedLetterObjsArray = [];
@@ -97,7 +91,7 @@ function Line({ count, targetWord, lettersMap, inputRef, handleInputChange }) {
         maxLength={targetWord.length}
         value={word}
         onChange={(e) => {
-          setWord(e.target.value.trim()); //.trim() removes the white space
+          setWord(e.target.value.trim());
         }}
         disabled={disabled}
         style={{ opacity: "0" }}
@@ -111,6 +105,7 @@ function Line({ count, targetWord, lettersMap, inputRef, handleInputChange }) {
               checkAllLetters(word, targetWord);
               checkWord(word, targetWord, letterObjs);
               setDisabled(!disabled);
+              setHasBeenUsed(!hasBeenUsed);
               handleInputChange(inputRef);
             }
           }
@@ -124,6 +119,7 @@ function Line({ count, targetWord, lettersMap, inputRef, handleInputChange }) {
               key={letter.index}
               correctLetter={letter.correctLetter}
               correctLetterCorrectPlace={letter.correctLetterCorrectPlace}
+              hasBeenUsed={hasBeenUsed}
             >
               {letter.letter}
             </LetterBox>

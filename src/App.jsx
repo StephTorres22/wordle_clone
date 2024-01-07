@@ -34,9 +34,10 @@ function App() {
       const word = await data.json();
       setTodaysWord(word[0].word) */
       setTodaysWord(word.data[0].word);
-      inputRefs[0].current.focus();
     }
+
     getTodaysWord();
+    inputRefs[0].current.focus();
   });
 
   const letterOccurrencesMap = getLetterOccurencesMap(todaysWord);
