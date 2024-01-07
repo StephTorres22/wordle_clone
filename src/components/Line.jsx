@@ -23,11 +23,10 @@ function Line({ count, targetWord, lettersMap }) {
     lineHeight: "1.5",
   };
 
-
   const [word, setWord] = useState("");
   const [letterObjs, setLetterObjs] = useState([]);
   const [disabled, setDisabled] = useState(false);
-  
+
   /* this isn't needed */
   useEffect(() => {
     const letters = [];
@@ -53,7 +52,6 @@ function Line({ count, targetWord, lettersMap }) {
     }
 
     setLetterObjs(() => compareCounts(updatedLetterObjsArray));
-    
   }
 
   function compareCounts(array) {
@@ -95,6 +93,7 @@ function Line({ count, targetWord, lettersMap }) {
           setWord(e.target.value.trim()); //.trim() removes the white space
         }}
         disabled={disabled}
+        style={{ display: "none" }}
       />
       <button
         onClick={() => {

@@ -13,6 +13,7 @@ function LetterBox({ children, correctLetter, correctLetterCorrectPlace }) {
       : correctLetter
       ? "yellow"
       : "red",
+    
   };
 
   return (
