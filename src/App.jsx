@@ -55,7 +55,7 @@ function App() {
   }
 
   return (
-    <>
+    <div>
       {attempts.map((attempt, index) => {
         return (
           <Line
@@ -69,7 +69,7 @@ function App() {
           />
         );
       })}
-    </>
+    </div>
   );
 }
 

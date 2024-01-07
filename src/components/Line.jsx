@@ -12,12 +12,11 @@ import {
 function Line({ count, targetWord, lettersMap, inputRef, handleInputChange }) {
   const styles = {
     display: "grid",
-    gridTemplateColumns: "repeat(5, .5fr)",
+    gridTemplateColumns: "repeat(5, 1fr)",
     gridTemplateRows: "1fr",
     height: "6rem",
-    width: "50%",
+    width: "40%",
 
-    marginBottom: "1rem",
     backgroundColor: "blue",
     fontSize: "2.5rem",
     lineHeight: "1.5",
