@@ -33,7 +33,7 @@ function App() {
 
       const word = await data.json();
       setTodaysWord(word[0].word) */
-      setTodaysWord(word.data[0].word);
+      setTodaysWord(word.data[0].word.toUpperCase());
     }
 
     getTodaysWord();
@@ -55,7 +55,21 @@ function App() {
   }
 
   return (
-    <div>
+    <div
+      style={{
+        width: "50%",
+        borderRadius: "5px",
+        backgroundColor: "skyblue",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        position: "absolute",
+        left: "50%",
+        translate: "-50%",
+        paddingBottom: "1rem",
+        fontFamily: "sans-serif"
+      }}
+    >
       {attempts.map((attempt, index) => {
         return (
           <Line

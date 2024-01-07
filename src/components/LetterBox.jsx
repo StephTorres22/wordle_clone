@@ -6,7 +6,7 @@ function LetterBox({
   hasBeenUsed,
 }) {
   const styles = {
-    height: "5rem",
+    height: "6.5rem",
     width: "5rem",
 
     placeSelf: "center",
@@ -21,6 +21,7 @@ function LetterBox({
         : hasBeenUsed
         ? "darkGray"
         : "lightGray",
+    borderRadius: "10px",
   };
 
   return (

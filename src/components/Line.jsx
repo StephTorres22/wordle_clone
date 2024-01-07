@@ -14,10 +14,9 @@ function Line({ count, targetWord, lettersMap, inputRef, handleInputChange }) {
     display: "grid",
     gridTemplateColumns: "repeat(5, 1fr)",
     gridTemplateRows: "1fr",
-    height: "6rem",
-    width: "40%",
-
-    backgroundColor: "blue",
+    height: "fit-content",
+    width: "100%",
+    // backgroundColor: "blue",
     fontSize: "2.5rem",
     lineHeight: "1.5",
   };
@@ -83,14 +82,14 @@ function Line({ count, targetWord, lettersMap, inputRef, handleInputChange }) {
   }
 
   return (
-    <div>
+    <div style={{ width: "60%", height: "fit-content" }}>
       <input
         ref={inputRef}
         type="text"
         maxLength={targetWord.length}
         value={word}
         onChange={(e) => {
-          setWord(e.target.value.trim());
+          setWord(e.target.value.trim().toUpperCase());
         }}
         disabled={disabled}
         style={{ opacity: "0" }}
