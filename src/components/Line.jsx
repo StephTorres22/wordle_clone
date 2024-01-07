@@ -9,7 +9,7 @@ import {
   getLetterCountFromInputWord,
 } from "../utility/checkWord.js";
 
-function Line({ count, targetWord, lettersMap }) {
+function Line({ count, targetWord, lettersMap, inputRef, handleInputChange }) {
   const styles = {
     display: "grid",
     gridTemplateColumns: "repeat(5, 1fr)",
@@ -23,11 +23,12 @@ function Line({ count, targetWord, lettersMap }) {
     lineHeight: "1.5",
   };
 
+  //const currentInput = useRef(1);
 
   const [word, setWord] = useState("");
   const [letterObjs, setLetterObjs] = useState([]);
   const [disabled, setDisabled] = useState(false);
-  
+
   /* this isn't needed */
   useEffect(() => {
     const letters = [];
@@ -36,6 +37,10 @@ function Line({ count, targetWord, lettersMap }) {
     }
     setLetterObjs(letters);
   }, [word, count]); //
+
+  /*  useEffect(() => {
+    currentInput.current.focus();
+  }, [currentInput]); */
 
   function checkAllLetters(word, targetWord) {
     const updatedLetterObjsArray = [];
@@ -53,7 +58,6 @@ function Line({ count, targetWord, lettersMap }) {
     }
 
     setLetterObjs(() => compareCounts(updatedLetterObjsArray));
-    
   }
 
   function compareCounts(array) {
@@ -88,6 +92,7 @@ function Line({ count, targetWord, lettersMap }) {
   return (
     <div>
       <input
+        ref={inputRef}
         type="text"
         maxLength={targetWord.length}
         value={word}
@@ -95,22 +100,23 @@ function Line({ count, targetWord, lettersMap }) {
           setWord(e.target.value.trim()); //.trim() removes the white space
         }}
         disabled={disabled}
-      />
-      <button
-        onClick={() => {
-          if (word.length < targetWord.length) {
-            alert("Your word is too short");
-          } else {
-            checkAllLetters(word, targetWord);
-            checkWord(word, targetWord, letterObjs);
-            setDisabled(!disabled);
+        style={{ opacity: "0" }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            if (word.length < targetWord.length) {
+              alert(
+                "Your word is too short, make sure it is a five letter word."
+              );
+            } else {
+              checkAllLetters(word, targetWord);
+              checkWord(word, targetWord, letterObjs);
+              setDisabled(!disabled);
+              handleInputChange(inputRef);
+            }
           }
-          /* need to add functionality not to be able to check words that are too short. */
         }}
-        disabled={disabled}
-      >
-        Check word
-      </button>
+      />
+
       <div style={styles}>
         {letterObjs.map((letter) => {
           return (

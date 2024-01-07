@@ -2,9 +2,23 @@ import "./App.css";
 import { getLetterOccurencesMap } from "./utility/checkWord.js";
 import Line from "./components/Line";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 function App() {
+  /* manually setting input refs, tried to do in a for loop but had a red squiggly */
+  const firstInput = useRef(null);
+  const secondInput = useRef(null);
+  const thirdInput = useRef(null);
+  const fourthInput = useRef(null);
+  const fifthInput = useRef(null);
+
+  const inputRefs = [
+    firstInput,
+    secondInput,
+    thirdInput,
+    fourthInput,
+    fifthInput,
+  ];
   const [todaysWord, setTodaysWord] = useState("");
   useEffect(() => {
     async function getTodaysWord() {
@@ -20,17 +34,33 @@ function App() {
       const word = await data.json();
       setTodaysWord(word[0].word) */
       setTodaysWord(word.data[0].word);
+      inputRefs[0].current.focus();
     }
     getTodaysWord();
-  }, []);
+  });
+
   const letterOccurrencesMap = getLetterOccurencesMap(todaysWord);
   const wordLength = todaysWord.length;
   const attempts = [1, 2, 3, 4, 5];
+
+  function changeInput(currentInput) {
+    const currentInputRefIndex = inputRefs.indexOf(currentInput);
+
+    if (currentInputRefIndex == inputRefs.length - 1) {
+      return;
+    }
+
+    inputRefs[currentInputRefIndex + 1].current.focus();
+  }
+
   return (
     <>
-      {attempts.map((attempt) => {
+      {attempts.map((attempt, index) => {
         return (
           <Line
+            handleInputChange={changeInput}
+            inputRef={inputRefs[index]}
+            attempt={attempt}
             count={wordLength}
             key={attempt}
             targetWord={todaysWord}
