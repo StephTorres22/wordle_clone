@@ -11,6 +11,14 @@ function App() {
   const thirdInput = useRef(null);
   const fourthInput = useRef(null);
   const fifthInput = useRef(null);
+  const sixthInput = useRef(null);
+
+  const numberOfAttempts = 6;
+  const attempts = [];
+
+  for (let i = 0; i < numberOfAttempts; i++) {
+    attempts.push(i + 1);
+  }
 
   const inputRefs = [
     firstInput,
@@ -18,6 +26,7 @@ function App() {
     thirdInput,
     fourthInput,
     fifthInput,
+    sixthInput,
   ];
   const [todaysWord, setTodaysWord] = useState("");
   useEffect(() => {
@@ -42,7 +51,6 @@ function App() {
 
   const letterOccurrencesMap = getLetterOccurencesMap(todaysWord);
   const wordLength = todaysWord.length;
-  const attempts = [1, 2, 3, 4, 5];
 
   function changeInput(currentInput) {
     const currentInputRefIndex = inputRefs.indexOf(currentInput);
@@ -67,7 +75,7 @@ function App() {
         left: "50%",
         translate: "-50%",
         paddingBottom: "1rem",
-        fontFamily: "sans-serif"
+        fontFamily: "sans-serif",
       }}
     >
       {attempts.map((attempt, index) => {
