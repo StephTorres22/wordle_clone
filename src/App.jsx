@@ -51,6 +51,7 @@ function App() {
 
   const letterOccurrencesMap = getLetterOccurencesMap(todaysWord);
   const wordLength = todaysWord.length;
+  console.log(wordLength, attempts);
 
   function changeInput(currentInput) {
     const currentInputRefIndex = inputRefs.indexOf(currentInput);
