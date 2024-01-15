@@ -47,7 +47,7 @@ function App() {
 
     getTodaysWord();
     inputRefs[0].current.focus();
-  });
+  }, []);
 
   const letterOccurrencesMap = getLetterOccurencesMap(todaysWord);
   const wordLength = todaysWord.length;

@@ -32,7 +32,7 @@ function Line({ count, targetWord, lettersMap, inputRef, handleInputChange }) {
       letters.push(letterObjFactory(i, word[i]));
     }
     setLetterObjs(letters);
-  }, [word, count]); //
+  }, []); //
 
   function checkAllLetters(word, targetWord) {
     const updatedLetterObjsArray = [];
